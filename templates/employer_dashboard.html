@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2 class="mb-4">Employer Dashboard</h2>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card card-soft p-3">
+      <h6 class="text-muted text-uppercase">Open Positions</h6>
+      <h3 class="fw-bold">{{ open_count }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-soft p-3">
+      <h6 class="text-muted text-uppercase">Pending Offers</h6>
+      <h3 class="fw-bold">{{ pending_count }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-soft p-3">
+      <h6 class="text-muted text-uppercase">Closed Positions</h6>
+      <h3 class="fw-bold">{{ closed_count }}</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Title + Create Button -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">Your Internship Positions</h4>
+  <a href="/employer/new" class="btn btn-primary">+ Post New Internship</a>
+</div>
+
+<!-- Table of Positions -->
+<div class="card card-soft p-3">
+  <table class="table align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Title</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Applicants</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in positions %}
+      <tr>
+        <td>
+          <strong>{{ p.title }}</strong><br>
+          <small class="text-muted">{{ p.weeks }} weeks · {{ p.hours_per_week }} hrs/week</small>
+        </td>
+        <td>{{ p.location }}</td>
+        <td>
+          {% if p.status == "Open" %}
+            <span class="badge-soft badge-status-green">Open</span>
+          {% elif p.status == "Pending" %}
+            <span class="badge-soft badge-status-blue">Pending</span>
+          {% else %}
+            <span class="badge-soft badge-status-gray">Closed</span>
+          {% endif %}
+        </td>
+        <td>{{ p.applicant_count }}</td>
+        <td class="text-end">
+          <a href="/employer/position/{{ p.id }}/apps" class="btn btn-sm btn-outline-primary">
+            View Applicants
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

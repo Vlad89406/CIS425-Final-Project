@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+  <div class="col-md-4">
+    <div class="card card-soft p-4">
+      <h4 class="mb-3 text-center">Co-op Portal Login</h4>
+      <p class="text-muted text-center mb-3">
+        Use your employer or faculty credentials.
+      </p>
+
+      {% if error %}
+        <div class="alert alert-danger py-2">{{ error }}</div>
+      {% endif %}
+
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <!-- For demo convenience, prefill one; you can clear it if you prefer -->
+          <input type="email" name="email" class="form-control"
+                 placeholder="employer@example.com or faculty@example.com" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control"
+                 placeholder="password123" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+
+        <div class="text-muted small mt-3">
+          Demo accounts:<br>
+          Employer: <code>employer@example.com</code> / <code>password123</code><br>
+          Faculty: <code>faculty@example.com</code> / <code>password123</code>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

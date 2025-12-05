@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<a href="/employer/dashboard" class="btn btn-sm btn-outline-secondary mb-3">
+  ← Back to Dashboard
+</a>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <div>
+    <h2 class="mb-1">{{ position.title }}</h2>
+    <small class="text-muted">
+      {{ position.location }} · {{ position.weeks }} weeks · {{ position.hours_per_week }} hrs/week
+    </small>
+  </div>
+  <div>
+    {% if position.status == "Open" %}
+      <span class="badge-soft badge-status-green px-3 py-2">Open</span>
+    {% elif position.status == "Pending" %}
+      <span class="badge-soft badge-status-blue px-3 py-2">Pending Offer</span>
+    {% else %}
+      <span class="badge-soft badge-status-gray px-3 py-2">Closed</span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card card-soft p-3 mb-4">
+  <h5 class="mb-2">Applicants</h5>
+  <small class="text-muted">Review applicants and select one for a co-op offer.</small>
+  <hr>
+
+  {% if applicants %}
+    <div class="row g-3">
+      {% for a in applicants %}
+      <div class="col-md-6">
+        <div class="card card-soft p-3 h-100">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <h6 class="mb-0">{{ a.name }}</h6>
+              <small class="text-muted">
+                {{ a.major }} · GPA {{ a.gpa }}
+              </small>
+            </div>
+            <span class="badge-soft badge-status-{{ a.status_color }}">
+              {{ a.status }}
+            </span>
+          </div>
+
+          <div class="mb-2">
+            <small class="text-muted d-block">
+              Applied: {{ a.applied_date }}
+            </small>
+            <small class="text-muted d-block">
+              Credits completed in major: {{ a.credits_completed }}
+            </small>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <a href="{{ a.resume_url }}" class="btn btn-sm btn-outline-secondary">
+              View Resume
+            </a>
+
+            <!-- For demo: this button doesn't have to fully work yet -->
+            <form method="post" action="/employer/position/{{ position.id }}/select/{{ a.id }}">
+              <button type="submit" class="btn btn-sm btn-primary">
+                Select for Co-op
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted mb-0">No applicants yet for this position.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
