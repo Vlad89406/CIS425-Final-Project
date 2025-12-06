@@ -1,83 +1,32 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h2 class="mb-3">Faculty Co-op Dashboard</h2>
-<p class="text-muted mb-4">
-  View co-op students in your department, review their summaries, and enter grades.
-</p>
+<h2 class="mb-3">Co-op Students ({{ user.raw.department }} Department)</h2>
 
-<!-- Summary cards -->
-<div class="row g-3 mb-4">
-  <div class="col-md-4">
-    <div class="card card-soft p-3">
-      <h6 class="text-muted text-uppercase">Total Co-op Students</h6>
-      <h3 class="fw-bold">{{ total_count }}</h3>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card card-soft p-3">
-      <h6 class="text-muted text-uppercase">Summaries Submitted</h6>
-      <h3 class="fw-bold">{{ submitted_count }}</h3>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card card-soft p-3">
-      <h6 class="text-muted text-uppercase">Co-ops Graded</h6>
-      <h3 class="fw-bold">{{ graded_count }}</h3>
-    </div>
-  </div>
-</div>
-
-<!-- Table of students -->
 <div class="card card-soft p-3">
-  <h5 class="mb-3">Co-op Students – CIS Department</h5>
-
-  <table class="table align-middle mb-0">
+  <table class="table align-middle">
     <thead class="table-light">
       <tr>
         <th>Student</th>
-        <th>Company / Position</th>
-        <th>Summary Status</th>
-        <th>Grade</th>
-        <th></th>
+        <th>Major</th>
+        <th>Status</th>
+        <th class="text-end">Action</th>
       </tr>
     </thead>
+
     <tbody>
       {% for s in students %}
       <tr>
+        <td><strong>{{ s.name }}</strong></td>
+        <td>{{ s.major }}</td>
         <td>
-          <strong>{{ s.name }}</strong><br>
-          <small class="text-muted">{{ s.major }}</small>
-        </td>
-        <td>
-          <strong>{{ s.company }}</strong><br>
-          <small class="text-muted">{{ s.position_title }}</small>
-        </td>
-        <td>
-          {% if s.summary_status == "Submitted" %}
-            <span class="badge-soft badge-status-green">Summary Submitted</span>
-          {% else %}
-            <span class="badge-soft badge-status-gray">Not Submitted</span>
-          {% endif %}
-        </td>
-        <td>
-          {% if s.grade %}
-            <span class="badge-soft badge-status-blue">Grade: {{ s.grade }}</span>
-          {% else %}
-            <span class="text-muted">Not graded</span>
-          {% endif %}
+          <span class="badge bg-{{ s.badge }}">{{ s.computed_status }}</span>
         </td>
         <td class="text-end">
-          {% if s.summary_status == "Submitted" %}
-            <a href="{{ url_for('faculty_review_coop', coop_id=s.id) }}"
-               class="btn btn-sm btn-outline-primary">
-              Review Summary
-            </a>
-          {% else %}
-            <button class="btn btn-sm btn-outline-secondary" disabled>
-              Awaiting Summary
-            </button>
-          {% endif %}
+          <a href="{{ url_for('faculty_review_coop', coop_id=s.id) }}"
+             class="btn btn-sm btn-primary">
+            Review
+          </a>
         </td>
       </tr>
       {% endfor %}

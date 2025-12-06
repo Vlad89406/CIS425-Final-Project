@@ -1,78 +1,66 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<a href="/employer/dashboard" class="btn btn-sm btn-outline-secondary mb-3">
+<a href="{{ url_for('employer_dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3">
   ← Back to Dashboard
 </a>
 
-<div class="d-flex justify-content-between align-items-center mb-2">
-  <div>
-    <h2 class="mb-1">{{ position.title }}</h2>
-    <small class="text-muted">
-      {{ position.location }} · {{ position.weeks }} weeks · {{ position.hours_per_week }} hrs/week
-    </small>
-  </div>
-  <div>
-    {% if position.status == "Open" %}
-      <span class="badge-soft badge-status-green px-3 py-2">Open</span>
-    {% elif position.status == "Pending" %}
-      <span class="badge-soft badge-status-blue px-3 py-2">Pending Offer</span>
-    {% else %}
-      <span class="badge-soft badge-status-gray px-3 py-2">Closed</span>
-    {% endif %}
-  </div>
-</div>
+<h2 class="mb-2">Applicants for {{ position.title }}</h2>
+<p class="text-muted mb-4">
+  Location: {{ position.location }} · {{ position.weeks }} weeks · {{ position.hours_per_week }} hrs/week
+</p>
 
-<div class="card card-soft p-3 mb-4">
-  <h5 class="mb-2">Applicants</h5>
-  <small class="text-muted">Review applicants and select one for a co-op offer.</small>
-  <hr>
+<div class="card card-soft p-3">
+  <h5 class="mb-3">Applicants</h5>
 
-  {% if applicants %}
-    <div class="row g-3">
-      {% for a in applicants %}
-      <div class="col-md-6">
-        <div class="card card-soft p-3 h-100">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <div>
-              <h6 class="mb-0">{{ a.name }}</h6>
-              <small class="text-muted">
-                {{ a.major }} · GPA {{ a.gpa }}
-              </small>
-            </div>
+  <table class="table align-middle mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Student</th>
+        <th>GPA</th>
+        <th>Credits Completed</th>
+        <th>Applied Date</th>
+        <th>Status</th>
+        <th class="text-end">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if applicants %}
+        {% for a in applicants %}
+        <tr>
+          <td>
+            <strong>{{ a.name }}</strong><br>
+            <small class="text-muted">{{ a.major }}</small>
+          </td>
+          <td>{{ a.gpa }}</td>
+          <td>{{ a.credits_completed }}</td>
+          <td>{{ a.applied_date }}</td>
+          <td>
             <span class="badge-soft badge-status-{{ a.status_color }}">
               {{ a.status }}
             </span>
-          </div>
-
-          <div class="mb-2">
-            <small class="text-muted d-block">
-              Applied: {{ a.applied_date }}
-            </small>
-            <small class="text-muted d-block">
-              Credits completed in major: {{ a.credits_completed }}
-            </small>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <a href="{{ a.resume_url }}" class="btn btn-sm btn-outline-secondary">
-              View Resume
-            </a>
-
-            <!-- For demo: this button doesn't have to fully work yet -->
-            <form method="post" action="/employer/position/{{ position.id }}/select/{{ a.id }}">
+          </td>
+          <td class="text-end">
+            <form method="post"
+                  action="{{ url_for('employer_select_applicant',
+                                     position_id=position.id,
+                                     applicant_id=a.id) }}">
               <button type="submit" class="btn btn-sm btn-primary">
                 Select for Co-op
               </button>
             </form>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="text-muted mb-0">No applicants yet for this position.</p>
-  {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            No applicants have applied for this position yet.
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
 </div>
 
 {% endblock %}
