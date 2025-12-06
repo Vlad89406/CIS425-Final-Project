@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<a href="{{ url_for('employer_dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3">
+  ← Back to Dashboard
+</a>
+
+<h2 class="mb-3">Company Profile</h2>
+
+<div class="card card-soft p-4">
+  <div class="mb-3">
+    <div class="text-muted small">Employer ID</div>
+    <div class="fw-semibold">{{ employer.id }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Company Name</div>
+    <div class="fw-semibold">{{ employer.company_name or "Not provided" }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Location</div>
+    <div>{{ employer.company_location or "Not provided" }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Website</div>
+    {% if employer.company_website %}
+      <a href="{{ employer.company_website }}" target="_blank">
+        {{ employer.company_website }}
+      </a>
+    {% else %}
+      <span class="text-muted">Not provided</span>
+    {% endif %}
+  </div>
+
+  <hr>
+
+  <div class="mb-3">
+    <div class="text-muted small">Contact Name</div>
+    <div>{{ employer.name }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Contact Email</div>
+    <div>{{ employer.email }}</div>
+  </div>
+
+  <div class="mb-1">
+    <div class="text-muted small">Contact Phone</div>
+    <div>{{ employer.contact_phone or "Not provided" }}</div>
+  </div>
+</div>
+
+{% endblock %}

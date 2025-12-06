@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<a href="{{ url_for('employer_dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3">
+  ← Back to Dashboard
+</a>
+
+<h2 class="mb-2">{{ position.title }}</h2>
+<p class="text-muted mb-3">
+  Position ID: {{ position.id }} · {{ position.location }}
+</p>
+
+<div class="card card-soft p-4">
+  <div class="mb-3">
+    <div class="text-muted small">Status</div>
+    {% if position.status == "Open" %}
+      <span class="badge bg-success">Open</span>
+    {% elif position.status == "Pending" %}
+      <span class="badge bg-warning text-dark">Pending</span>
+    {% else %}
+      <span class="badge bg-secondary">Closed</span>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Weeks / Hours per Week</div>
+    <div>{{ position.weeks }} weeks · {{ position.hours_per_week }} hours/week</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Salary</div>
+    <div>{{ position.salary or "Not specified" }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Job Type</div>
+    <div>{{ position.job_type or "Not specified" }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Majors of Interest</div>
+    <div>{{ position.majors or "Not specified" }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Required Skills</div>
+    <div>{{ position.required_skills or "Not specified" }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Preferred Skills</div>
+    <div>{{ position.preferred_skills or "Not specified" }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Description</div>
+    <div>{{ position.description or "Not specified" }}</div>
+  </div>
+
+  <hr>
+
+  <div class="mb-2">
+    <div class="text-muted small">Selected Student</div>
+    {% if position.selected_student_id %}
+      <div>Student ID: {{ position.selected_student_id }}</div>
+    {% else %}
+      <div class="text-muted">No student selected yet.</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-0">
+    <div class="text-muted small">Offer Details</div>
+    {% if position.offer_details %}
+      <div>{{ position.offer_details }}</div>
+    {% else %}
+      <div class="text-muted">No offer details recorded.</div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

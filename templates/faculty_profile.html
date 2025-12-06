@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<a href="{{ url_for('faculty_dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3">
+  ← Back to Dashboard
+</a>
+
+<h2 class="mb-3">Faculty Profile</h2>
+
+<div class="card card-soft p-4">
+  <div class="mb-3">
+    <div class="text-muted small">Name</div>
+    <div class="fw-semibold">{{ faculty.name }}</div>
+  </div>
+
+  <div class="mb-3">
+    <div class="text-muted small">Email</div>
+    <div>{{ faculty.email }}</div>
+  </div>
+
+  <div class="mb-1">
+    <div class="text-muted small">Department</div>
+    <div>{{ faculty.department or "Not specified" }}</div>
+  </div>
+</div>
+
+{% endblock %}
